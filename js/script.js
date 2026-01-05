@@ -139,8 +139,73 @@ function showCommandCategory(category, btn) {
     }
 }
 
+// Mobile Menu Toggle
+function toggleMobileMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('mobile-overlay');
+    
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
+        // Prevent body scroll when menu is open
+        if (sidebar.classList.contains('show')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+}
+
+function closeMobileMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('mobile-overlay');
+    
+    if (sidebar && overlay) {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+}
+
+// Close mobile menu when clicking on overlay
+document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('mobile-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', closeMobileMenu);
+    }
+    
+    // Close mobile menu when clicking on a nav item (mobile)
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+                closeMobileMenu();
+            }
+        });
+    });
+});
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     initializeGoldenRules();
+    
+    // Mobile menu toggle button
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const menuClose = document.getElementById('mobile-menu-close');
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', toggleMobileMenu);
+    }
+    
+    if (menuClose) {
+        menuClose.addEventListener('click', closeMobileMenu);
+    }
+    
+    // Close mobile menu on window resize if it becomes desktop size
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+            closeMobileMenu();
+        }
+    });
 });
 

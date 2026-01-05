@@ -81,17 +81,25 @@
     
     <!-- Top Navbar with Branding - GitHub Style -->
     <nav class="bg-white border-b border-[#d0d7de] z-30 flex-shrink-0" style="box-shadow: 0 1px 0 rgba(27, 31, 36, 0.04);">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <svg class="w-8 h-8 text-[#24292f]" fill="currentColor" viewBox="0 0 24 24">
+        <div class="w-full px-2 sm:px-4 lg:px-8">
+            <div class="flex items-center justify-between h-14 sm:h-16">
+                <!-- Logo - Leftmost corner -->
+                <div class="flex items-center">
+                    <svg class="w-7 h-7 sm:w-8 sm:h-8 text-[#24292f]" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
-                    <div>
-                        <h1 class="text-lg font-semibold text-[#24292f] leading-tight">Git<span class="text-[#0969da]">Protocol</span></h1>
-                        <p class="text-xs text-[#57606a] leading-tight">Team Handbook v2.0</p>
-                    </div>
-                </div>
+                    <div class="ml-2 hidden sm:block">
+                        <h1 class="text-base sm:text-lg font-semibold text-[#24292f] leading-tight">Git<span class="text-[#0969da]">Protocol</span></h1>
+                        <p class="text-[10px] sm:text-xs text-[#57606a] leading-tight">Team Handbook v2.0</p>
+            </div>
+        </div>
+                <!-- Mobile Menu Toggle -->
+                <button id="mobile-menu-toggle" class="md:hidden p-2 text-[#24292f] hover:bg-[#f6f8fa] rounded-md transition-colors" aria-label="Toggle menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center gap-4 text-sm">
                     <a href="#" class="text-[#24292f] hover:text-[#0969da] transition-colors font-medium">Documentation</a>
                     <a href="#" class="text-[#24292f] hover:text-[#0969da] transition-colors font-medium">Quick Start</a>
@@ -104,8 +112,28 @@
         </div>
     </nav>
 
-    <div class="flex flex-1 overflow-hidden">
-    <aside class="w-72 bg-white border-r border-[#d0d7de] flex flex-col h-full z-20 flex-shrink-0">
+    <div class="flex flex-1 overflow-hidden relative">
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/50 z-40 md:hidden hidden"></div>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-white border-r border-[#d0d7de] flex flex-col h-full z-50 md:z-20 flex-shrink-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <!-- Mobile Sidebar Header -->
+        <div class="md:hidden flex items-center justify-between p-4 border-b border-[#d0d7de]">
+            <div class="flex items-center gap-2">
+                <svg class="w-6 h-6 text-[#24292f]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <div>
+                    <h1 class="text-sm font-semibold text-[#24292f] leading-tight">Git<span class="text-[#0969da]">Protocol</span></h1>
+                    <p class="text-[10px] text-[#57606a] leading-tight">Team Handbook v2.0</p>
+                </div>
+            </div>
+            <button id="mobile-menu-close" class="p-2 text-[#24292f] hover:bg-[#f6f8fa] rounded-md transition-colors" aria-label="Close menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
         <nav class="flex-1 overflow-y-auto py-3 space-y-1">
             <button onclick="openTab('tab-intro', this)" class="nav-item active w-full text-left px-3 py-2 text-sm font-normal text-[#24292f] hover:bg-[#f6f8fa] transition-colors flex items-center gap-2 rounded-md">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -153,7 +181,7 @@
                             <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
                         </svg>
                         Golden Rules
-                    </strong>
+                </strong>
                     <div class="flex items-center gap-1">
                         <button onclick="previousRule()" class="p-1 hover:bg-[#fff8c5] rounded transition-colors" aria-label="Previous rule">
                             <svg class="w-3.5 h-3.5 text-[#57606a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
@@ -171,9 +199,9 @@
         </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto h-full p-6 lg:p-8 relative bg-[#f6f8fa]">
+    <main class="flex-1 overflow-y-auto h-full p-3 sm:p-4 md:p-6 lg:p-8 relative bg-[#f6f8fa]">
         
-        <section id="tab-intro" class="tab-content active max-w-5xl mx-auto">
+               <section id="tab-intro" class="tab-content active max-w-5xl mx-auto w-full">
             <div class="mb-12">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
@@ -308,7 +336,7 @@
             </div>
         </section>
 
-        <section id="tab-structure" class="tab-content max-w-5xl mx-auto">
+        <section id="tab-structure" class="tab-content max-w-5xl mx-auto w-full">
             <div class="mb-8">
             <h2 class="text-3xl font-bold text-slate-900 mb-2">Monorepo Structure</h2>
                 <p class="text-slate-600 mb-2">We use a "Single Source of Truth" structure that keeps all related code in one repository for easier dependency management and cross-project changes.</p>
@@ -431,7 +459,7 @@
             </div>
         </section>
 
-        <section id="tab-branching" class="tab-content max-w-5xl mx-auto">
+        <section id="tab-branching" class="tab-content max-w-5xl mx-auto w-full">
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-slate-900 mb-2">Branching Strategy</h2>
                 <p class="mb-4 text-slate-600">We follow a simplified GitFlow model that balances flexibility with structure. This strategy ensures code quality while maintaining development velocity.</p>
@@ -602,7 +630,7 @@
             </div>
         </section>
 
-        <section id="tab-workflow" class="tab-content max-w-5xl mx-auto">
+        <section id="tab-workflow" class="tab-content max-w-5xl mx-auto w-full">
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-slate-900 mb-2">Daily Workflow</h2>
                 <p class="text-slate-600 mb-4">Follow these steps every day to maintain a clean, organized workflow. Consistency prevents most Git headaches.</p>
@@ -783,7 +811,7 @@
             </div>
         </section>
 
-        <section id="tab-commits" class="tab-content max-w-5xl mx-auto">
+        <section id="tab-commits" class="tab-content max-w-5xl mx-auto w-full">
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-slate-900 mb-2">Semantic Commits</h2>
                 <p class="text-slate-600 mb-4">Semantic commits make your Git history readable and enable automated tooling. Every commit message follows a consistent format that clearly describes what changed and why.</p>
@@ -959,7 +987,7 @@
             </div>
         </section>
 
-        <section id="tab-pr" class="tab-content max-w-5xl mx-auto">
+        <section id="tab-pr" class="tab-content max-w-5xl mx-auto w-full">
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-slate-900 mb-2">Pull Request Protocol</h2>
                 <p class="text-slate-600 mb-4">Pull Requests are our quality gate and knowledge sharing mechanism. A well-crafted PR makes code review efficient and helps the team learn from each other.</p>
@@ -1109,7 +1137,7 @@
             </div>
         </section>
 
-        <section id="tab-conflicts" class="tab-content max-w-5xl mx-auto">
+        <section id="tab-conflicts" class="tab-content max-w-5xl mx-auto w-full">
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-slate-900 mb-2">Conflict Resolution</h2>
                 <p class="text-slate-600 mb-4">Conflicts occur when Git cannot automatically merge changes. This usually happens when two people edit the same lines in different branches. Don't panic—conflicts are normal and easily resolved.</p>
@@ -1218,7 +1246,7 @@
             </div>
         </section>
 
-        <section id="tab-troubleshoot" class="tab-content max-w-5xl mx-auto">
+        <section id="tab-troubleshoot" class="tab-content max-w-5xl mx-auto w-full">
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-slate-900 mb-2">Emergency & Undo</h2>
                 <p class="text-slate-600 mb-4">Made a mistake? Don't panic. Git is very forgiving if you haven't pushed yet. Most mistakes can be undone safely.</p>
@@ -1342,7 +1370,7 @@
             </div>
         </section>
 
-        <section id="tab-commands" class="tab-content max-w-5xl mx-auto">
+        <section id="tab-commands" class="tab-content max-w-5xl mx-auto w-full">
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-slate-900 mb-2">Git Commands Guide</h2>
                 <p class="text-slate-600 mb-4">Comprehensive reference for all Git commands organized by category. Click on a category to explore commands in that area.</p>
