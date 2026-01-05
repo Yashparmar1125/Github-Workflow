@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Git Workflow Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        code { font-family: 'JetBrains Mono', monospace; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .sidebar-btn.active {
+            background-color: #eff6ff;
+            color: #2563eb;
+            border-right: 3px solid #2563eb;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex h-screen overflow-hidden">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-72 bg-white border-r border-slate-200 flex flex-col h-full shadow-sm z-10 flex-shrink-0">
+        <div class="p-6 border-b border-slate-100">
+            <h1 class="text-xl font-bold text-slate-900 tracking-tight">Git Workflow</h1>
+            <p class="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Team Documentation</p>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <button onclick="openTab(event, 'tab-intro')" class="sidebar-btn active w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center gap-3">
+                <span class="w-6 h-6 rounded bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">1</span>
+                North Star & Objectives
+            </button>
+            <button onclick="openTab(event, 'tab-structure')" class="sidebar-btn w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center gap-3">
+                <span class="w-6 h-6 rounded bg-slate-100 text-slate-500 flex items-center justify-center text-xs font-bold">2</span>
+                Repo Structure
+            </button>
+            <button onclick="openTab(event, 'tab-branching')" class="sidebar-btn w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center gap-3">
+                <span class="w-6 h-6 rounded bg-purple-100 text-purple-600 flex items-center justify-center text-xs font-bold">3</span>
+                Branching Strategy
+            </button>
+            <button onclick="openTab(event, 'tab-workflow')" class="sidebar-btn w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center gap-3">
+                <span class="w-6 h-6 rounded bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">4</span>
+                Daily Workflow
+            </button>
+            <button onclick="openTab(event, 'tab-commits')" class="sidebar-btn w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center gap-3">
+                <span class="w-6 h-6 rounded bg-yellow-100 text-yellow-600 flex items-center justify-center text-xs font-bold">5</span>
+                Commit Standards
+            </button>
+            <button onclick="openTab(event, 'tab-pr')" class="sidebar-btn w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center gap-3">
+                <span class="w-6 h-6 rounded bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold">6</span>
+                Pull Requests (PRs)
+            </button>
+            <button onclick="openTab(event, 'tab-conflicts')" class="sidebar-btn w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center gap-3">
+                <span class="w-6 h-6 rounded bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">7</span>
+                Conflict & Sync
+            </button>
+            <button onclick="openTab(event, 'tab-roles')" class="sidebar-btn w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center gap-3">
+                <span class="w-6 h-6 rounded bg-teal-100 text-teal-600 flex items-center justify-center text-xs font-bold">8</span>
+                Roles & Releases
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-slate-200">
+            <div class="bg-slate-50 rounded p-3 text-xs text-slate-500 leading-relaxed">
+                <strong class="text-slate-700 block mb-1">Quick Tip:</strong>
+                Always pull origin dev before creating a new branch.
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto h-full p-8 lg:p-12 relative">
+        
+        <!-- Tab 1: Objectives -->
+        <section id="tab-intro" class="tab-content active max-w-4xl mx-auto">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">1. Objective & North Star</h2>
+                <p class="text-lg text-slate-600 leading-relaxed">
+                    This document defines how our team uses Git to collaborate efficiently, maintain code quality, and ensure traceability across the project lifecycle.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <div class="text-blue-600 font-bold mb-2 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Zero Confusion
+                    </div>
+                    <p class="text-sm text-slate-600">Clear rules on which branch to use. No guessing where code goes.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <div class="text-blue-600 font-bold mb-2 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Clean History
+                    </div>
+                    <p class="text-sm text-slate-600">Semantic commits allow us to generate changelogs and trace bugs instantly.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <div class="text-blue-600 font-bold mb-2 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        Frictionless
+                    </div>
+                    <p class="text-sm text-slate-600">Predictable releases and conflict-free collaboration via strict protocols.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 2: Structure -->
+        <section id="tab-structure" class="tab-content max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6">2. Repository Structure</h2>
+            <p class="text-slate-600 mb-6">We follow a single-source-of-truth repository model (Monorepo approach).</p>
+
+            <div class="bg-slate-900 text-slate-200 p-6 rounded-lg font-mono text-sm leading-relaxed mb-8 shadow-lg">
+                <span class="text-blue-400">/project-root</span><br>
+                │── <span class="text-yellow-400">frontend/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-slate-500"># React/Angular/Vue App</span><br>
+                │── <span class="text-yellow-400">backend/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-slate-500"># Node/Python API</span><br>
+                │── <span class="text-yellow-400">docs/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-slate-500"># Diagrams, PDF Reports</span><br>
+                │── .gitignore<br>
+                │── README.md<br>
+                └── CONTRIBUTING.md
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r text-yellow-800">
+                <p class="font-bold">Important Rule</p>
+                <p class="text-sm">Never commit huge files (datasets, videos, `node_modules`). Ensure your `.gitignore` is configured correctly before your first push.</p>
+            </div>
+        </section>
+
+        <!-- Tab 3: Branching -->
+        <section id="tab-branching" class="tab-content max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6">3. Branching Strategy</h2>
+            
+            <div class="space-y-6">
+                <!-- Main Branches -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800">Primary Branches</h3>
+                        <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full font-bold">Protected</span>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-4">
+                                <span class="font-mono bg-slate-100 px-2 py-1 rounded text-slate-800 font-bold border border-slate-300">main</span>
+                                <div>
+                                    <p class="font-semibold text-slate-800">Production Ready</p>
+                                    <p class="text-sm text-slate-600">The stable version. No direct commits allowed. Only merging from `dev` happens here.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="font-mono bg-blue-100 px-2 py-1 rounded text-blue-800 font-bold border border-blue-200">dev</span>
+                                <div>
+                                    <p class="font-semibold text-slate-800">Integration Branch</p>
+                                    <p class="text-sm text-slate-600">The "Beta" version. All feature branches merge here first for testing.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Feature Branches -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="font-bold text-slate-800">Temporary Branches</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm text-slate-600 mb-4">Naming Convention: <code class="text-red-500 bg-red-50 px-1 rounded">type/short-description</code></p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                <span class="text-green-600 font-bold text-xs block mb-1">NEW FEATURES</span>
+                                <code class="text-sm">feature/login-api</code><br>
+                                <code class="text-sm">feature/payment-ui</code>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                <span class="text-orange-600 font-bold text-xs block mb-1">FIXES</span>
+                                <code class="text-sm">bugfix/auth-token</code><br>
+                                <code class="text-sm">hotfix/db-crash</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 4: Workflow -->
+        <section id="tab-workflow" class="tab-content max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6">4. Daily Workflow</h2>
+            
+            <div class="relative border-l-2 border-slate-200 ml-3 space-y-10">
+                
+                <!-- Step 1 -->
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
+                    <h3 class="text-lg font-bold text-slate-900">Step 1: Start Fresh</h3>
+                    <p class="text-slate-600 mb-2">Always pull the latest code before starting.</p>
+                    <div class="bg-slate-800 text-slate-200 p-3 rounded shadow-inner font-mono text-sm">
+                        git checkout dev<br>
+                        git pull origin dev
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
+                    <h3 class="text-lg font-bold text-slate-900">Step 2: Create Branch</h3>
+                    <p class="text-slate-600 mb-2">Create a specific branch for your task.</p>
+                    <div class="bg-slate-800 text-slate-200 p-3 rounded shadow-inner font-mono text-sm">
+                        git checkout -b feature/your-feature-name
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
+                    <h3 class="text-lg font-bold text-slate-900">Step 3: Work & Commit</h3>
+                    <p class="text-slate-600 mb-2">Code locally. Commit often using semantic messages.</p>
+                    <div class="bg-slate-800 text-slate-200 p-3 rounded shadow-inner font-mono text-sm">
+                        git add .<br>
+                        git commit -m "feat: add user login form"
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative pl-8">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
+                    <h3 class="text-lg font-bold text-slate-900">Step 4: Push</h3>
+                    <p class="text-slate-600 mb-2">Push your branch to GitHub.</p>
+                    <div class="bg-slate-800 text-slate-200 p-3 rounded shadow-inner font-mono text-sm">
+                        git push origin feature/your-feature-name
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 5: Commits -->
+        <section id="tab-commits" class="tab-content max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6">5. Commit Standards</h2>
+            <p class="text-slate-600 mb-6">We use <strong>Semantic Commits</strong>. This makes reading history easier and looks professional to recruiters.</p>
+
+            <div class="overflow-hidden rounded-lg border border-slate-200 mb-8">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                        <tr>
+                            <th class="px-6 py-3 w-32">Type</th>
+                            <th class="px-6 py-3">Description</th>
+                            <th class="px-6 py-3">Example</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-3 font-mono text-blue-600 font-bold">feat</td>
+                            <td class="px-6 py-3 text-slate-600">A new feature</td>
+                            <td class="px-6 py-3 font-mono text-xs">feat: add dark mode toggle</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-3 font-mono text-orange-600 font-bold">fix</td>
+                            <td class="px-6 py-3 text-slate-600">A bug fix</td>
+                            <td class="px-6 py-3 font-mono text-xs">fix: resolve null pointer on login</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-3 font-mono text-purple-600 font-bold">docs</td>
+                            <td class="px-6 py-3 text-slate-600">Documentation only</td>
+                            <td class="px-6 py-3 font-mono text-xs">docs: update readme instructions</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-3 font-mono text-slate-600 font-bold">style</td>
+                            <td class="px-6 py-3 text-slate-600">Formatting, missing semi-colons</td>
+                            <td class="px-6 py-3 font-mono text-xs">style: format home.js</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-3 font-mono text-teal-600 font-bold">refactor</td>
+                            <td class="px-6 py-3 text-slate-600">Code change that neither fixes bug nor adds feature</td>
+                            <td class="px-6 py-3 font-mono text-xs">refactor: simplify auth logic</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                <h4 class="text-red-800 font-bold mb-2">🚫 Strictly Forbidden Commit Messages</h4>
+                <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+                    <li>"updates"</li>
+                    <li>"fixed stuff"</li>
+                    <li>"wip"</li>
+                    <li>"done"</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Tab 6: Pull Requests -->
+        <section id="tab-pr" class="tab-content max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6">6. Pull Request (PR) Rules</h2>
+            
+            <div class="grid grid-cols-1 gap-6">
+                <!-- Checklist -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">✅ The Pre-PR Checklist</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-center gap-2">
+                            <input type="checkbox" checked disabled class="accent-blue-600">
+                            <span>Code compiles and runs locally without crashing</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <input type="checkbox" checked disabled class="accent-blue-600">
+                            <span>Console logs (debug prints) are removed</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <input type="checkbox" checked disabled class="accent-blue-600">
+                            <span>Feature scope is limited (don't mix login and payment logic)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Template -->
+                <div class="bg-slate-800 text-slate-200 p-6 rounded-lg shadow-inner font-mono text-sm">
+                    <p class="text-slate-400 mb-2 border-b border-slate-700 pb-2">// Copy this into your PR Description</p>
+                    
+                    ## What does this PR do?
+                    - Implements user login API
+                    - Adds token validation middleware
+
+                    ## Screenshots / Logs
+                    (Paste screenshots here if UI changes)
+
+                    ## Related Issue
+                    Closes #12
+                </div>
+
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-blue-800 text-sm">
+                    <strong>Rule:</strong> At least <strong>one</strong> other teammate must review your code before merging.
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 7: Conflicts -->
+        <section id="tab-conflicts" class="tab-content max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6">7. Conflict Resolution</h2>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 mb-6">
+                <p class="text-slate-600 mb-4">Conflicts happen when two people edit the same line of code. Don't panic. Follow this protocol:</p>
+                
+                <ol class="list-decimal list-inside space-y-4 text-slate-700">
+                    <li class="pl-2">
+                        <strong>Switch to Dev & Update:</strong>
+                        <div class="mt-2 bg-slate-100 p-2 rounded font-mono text-sm">git checkout dev && git pull origin dev</div>
+                    </li>
+                    <li class="pl-2">
+                        <strong>Go back to your branch:</strong>
+                        <div class="mt-2 bg-slate-100 p-2 rounded font-mono text-sm">git checkout feature/your-branch</div>
+                    </li>
+                    <li class="pl-2">
+                        <strong>Merge Dev into your branch:</strong>
+                        <div class="mt-2 bg-slate-100 p-2 rounded font-mono text-sm">git merge dev</div>
+                    </li>
+                    <li class="pl-2">
+                        <strong>Fix the code:</strong> Open VS Code. Look for <code class="text-red-600">HEAD<<<<</code> markers. Decide which code stays.
+                    </li>
+                    <li class="pl-2">
+                        <strong>Commit the fix:</strong>
+                        <div class="mt-2 bg-slate-100 p-2 rounded font-mono text-sm">git add . && git commit -m "fix: resolve merge conflicts"</div>
+                    </li>
+                </ol>
+            </div>
+            
+            <div class="text-center text-sm text-slate-500 italic">
+                "Conflicts are just code trying to hold hands but missing."
+            </div>
+        </section>
+
+        <!-- Tab 8: Roles -->
+        <section id="tab-roles" class="tab-content max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6">8. Roles & Releases</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Roles -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-slate-800 mb-4">Responsibility Matrix</h3>
+                    <ul class="space-y-3">
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="text-slate-600">Backend Lead</span>
+                            <span class="font-semibold text-slate-800">API, DB, Auth</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="text-slate-600">Frontend Lead</span>
+                            <span class="font-semibold text-slate-800">UI, State, Integration</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="text-slate-600">ML / Logic</span>
+                            <span class="font-semibold text-slate-800">Models, Algorithms</span>
+                        </li>
+                        <li class="flex justify-between pb-2">
+                            <span class="text-slate-600">Integration Lead</span>
+                            <span class="font-semibold text-slate-800">Merging, Git Cleanliness</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Release Strategy -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-slate-800 mb-4">Release Protocol</h3>
+                    <p class="text-sm text-slate-600 mb-4">Only the Team Lead merges <strong>dev → main</strong>.</p>
+                    <div class="bg-slate-900 text-slate-200 p-3 rounded font-mono text-xs">
+                        # After successful testing<br>
+                        git checkout main<br>
+                        git merge dev<br>
+                        git tag v1.0<br>
+                        git push origin v1.0
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Tags are used for demos and final submission checkpoints.</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-8 rounded-lg text-center shadow-lg">
+                <h3 class="text-2xl font-bold mb-2">Ready to Code?</h3>
+                <p class="text-blue-100 mb-6">Following this guide minimizes chaos and maximizes velocity.</p>
+                <div class="inline-block bg-white/20 backdrop-blur-sm px-6 py-2 rounded-full font-mono text-sm border border-white/30">
+                    git clone [your-repo-url]
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function openTab(evt, tabName) {
+            // Hide all tab content
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+
+            // Remove active class from all sidebar buttons
+            const sidebarBtns = document.getElementsByClassName("sidebar-btn");
+            for (let i = 0; i < sidebarBtns.length; i++) {
+                sidebarBtns[i].classList.remove("active");
+                // Reset icons/text colors if needed, but CSS hover/active handles most
+            }
+
+            // Show the specific tab content
+            document.getElementById(tabName).classList.add("active");
+
+            // Add active class to the button that opened the tab
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
