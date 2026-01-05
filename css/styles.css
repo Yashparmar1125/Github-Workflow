@@ -1,0 +1,245 @@
+/* GitHub-inspired Theme Variables */
+:root {
+    --gh-bg-primary: #ffffff;
+    --gh-bg-secondary: #f6f8fa;
+    --gh-border-primary: #d0d7de;
+    --gh-border-secondary: #d8dee4;
+    --gh-text-primary: #24292f;
+    --gh-text-secondary: #57606a;
+    --gh-text-tertiary: #6e7781;
+    --gh-accent: #0969da;
+    --gh-accent-hover: #0860ca;
+    --gh-success: #1a7f37;
+    --gh-warning: #9a6700;
+    --gh-danger: #cf222e;
+    --gh-shadow-sm: 0 1px 0 rgba(27, 31, 36, 0.04);
+    --gh-shadow-md: 0 3px 6px rgba(140, 149, 159, 0.15);
+    --gh-shadow-lg: 0 8px 24px rgba(140, 149, 159, 0.2);
+}
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    background-color: var(--gh-bg-secondary);
+    color: var(--gh-text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+code, pre, .font-mono { 
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 85%;
+}
+
+/* Smooth Fade In Animation */
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Custom Scrollbar - GitHub Style */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d0d7de; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #afb8c1; }
+
+/* Sidebar Active State - GitHub Style */
+.nav-item {
+    color: var(--gh-text-secondary);
+    border-radius: 6px;
+    margin: 0 8px;
+}
+
+.nav-item:hover {
+    background-color: var(--gh-bg-secondary);
+}
+
+.nav-item.active {
+    background-color: var(--gh-bg-secondary);
+    color: var(--gh-text-primary);
+    font-weight: 600;
+}
+
+.nav-item.active svg { 
+    color: var(--gh-text-primary); 
+}
+
+.nav-item svg {
+    width: 16px;
+    height: 16px;
+    color: var(--gh-text-tertiary);
+}
+
+/* Code Block Styling */
+.code-window {
+    background: #1e293b;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.code-window:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px -2px rgba(0, 0, 0, 0.15);
+}
+.code-header {
+    background: #0f172a;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; }
+
+/* Enhanced Card Hover Effects */
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Badge Animations */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.badge:hover {
+    transform: scale(1.05);
+}
+
+/* Command Block Copy Effect */
+.command-block {
+    position: relative;
+    transition: all 0.2s ease;
+}
+.command-block:hover {
+    background-color: #1e293b;
+}
+
+/* Step Number Animation */
+.step-number {
+    transition: all 0.3s ease;
+}
+.step-number:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Table Row Hover */
+.table-row-hover {
+    transition: background-color 0.15s ease;
+}
+
+/* Pulse Animation for Important Items */
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+}
+.pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Smooth Transitions */
+* {
+    transition-property: color, background-color, border-color, transform, box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* Code Syntax Highlighting */
+.code-keyword { color: #c792ea; }
+.code-string { color: #c3e88d; }
+.code-comment { color: #546e7a; }
+.code-function { color: #82aaff; }
+.code-variable { color: #f78c6c; }
+
+/* Golden Rules Carousel Animation */
+.golden-rules-container {
+    position: relative;
+    min-height: 48px;
+    overflow: hidden;
+}
+
+.golden-rule-item {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform: translateX(15px);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.golden-rule-item.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.golden-rule-item.exit {
+    opacity: 0;
+    transform: translateX(-15px);
+    visibility: hidden;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeSlideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}
+
+/* Command Category Tabs - GitHub Style */
+.command-category-tab {
+    transition: all 0.2s ease;
+    border: 1px solid var(--gh-border-primary);
+}
+
+.command-category-tab.active {
+    background-color: var(--gh-text-primary);
+    color: white;
+    border-color: var(--gh-text-primary);
+    box-shadow: var(--gh-shadow-sm);
+}
+
+.command-card {
+    transition: all 0.3s ease;
+}
+
+.command-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
