@@ -113,12 +113,12 @@ Run this handbook locally in **3 simple steps**:
 
 1.  **Clone the Repo**
     ```bash
-    git clone [https://github.com/your-username/git-protocol-handbook.git](https://github.com/your-username/git-protocol-handbook.git)
+    git clone https://github.com/Yashparmar1125/Github-Workflow
     ```
 
 2.  **Navigate to Folder**
     ```bash
-    cd git-protocol-handbook
+    cd Github-Workflow
     ```
 
 3.  **Launch!**
