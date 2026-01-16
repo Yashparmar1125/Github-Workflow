@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const stashApiUrl = '/api/stash-chat';
-const stashModel = 'openai/gpt-4.1-mini';
+const stashModel = 'nvidia/nemotron-3-nano-30b-a3b:free';
 const stashSystemMessage = [
     'System prompt version: stash-prompt.v1',
     '',
