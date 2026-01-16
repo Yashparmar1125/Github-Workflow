@@ -271,16 +271,98 @@ function stashFormatMessageContent(content) {
     if (content == null) {
         return container;
     }
-    const normalized = String(content).replace(/\r\n/g, '\n');
-    const blocks = normalized.split(/\n{2,}/);
-    for (let i = 0; i < blocks.length; i += 1) {
-        const value = blocks[i];
-        if (!value) {
+    const text = String(content).replace(/\r\n/g, '\n');
+    const lines = text.split('\n');
+    let i = 0;
+    let inCode = false;
+    let codeLines = [];
+    function escapeHTML(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function renderInline(s) {
+        const escaped = escapeHTML(s);
+        const html = escaped
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/_(.+?)_/g, '<em>$1</em>')
+            .replace(/`([^`]+)`/g, '<code class="stash-inline-code">$1</code>');
+        const span = document.createElement('span');
+        span.innerHTML = html;
+        return span;
+    }
+    while (i < lines.length) {
+        const line = lines[i];
+        if (!inCode && line.trim().startsWith('```')) {
+            inCode = true;
+            codeLines = [];
+            i += 1;
             continue;
         }
-        const paragraph = document.createElement('p');
-        paragraph.textContent = value;
-        container.appendChild(paragraph);
+        if (inCode) {
+            if (line.trim().startsWith('```')) {
+                const pre = document.createElement('pre');
+                pre.className = 'stash-code';
+                const code = document.createElement('code');
+                code.className = 'stash-code-inner';
+                code.textContent = codeLines.join('\n');
+                pre.appendChild(code);
+                container.appendChild(pre);
+                inCode = false;
+                codeLines = [];
+                i += 1;
+                continue;
+            } else {
+                codeLines.push(line);
+                i += 1;
+                continue;
+            }
+        }
+        if (/^\s*\d+\.\s+/.test(line)) {
+            const ol = document.createElement('ol');
+            ol.className = 'stash-list stash-list-ol';
+            while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) {
+                const item = lines[i].replace(/^\s*\d+\.\s+/, '');
+                const li = document.createElement('li');
+                li.appendChild(renderInline(item));
+                ol.appendChild(li);
+                i += 1;
+            }
+            container.appendChild(ol);
+            continue;
+        }
+        if (/^\s*[-*]\s+/.test(line)) {
+            const ul = document.createElement('ul');
+            ul.className = 'stash-list stash-list-ul';
+            while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) {
+                const item = lines[i].replace(/^\s*[-*]\s+/, '');
+                const li = document.createElement('li');
+                li.appendChild(renderInline(item));
+                ul.appendChild(li);
+                i += 1;
+            }
+            container.appendChild(ul);
+            continue;
+        }
+        const paraLines = [];
+        while (i < lines.length) {
+            const l = lines[i];
+            if (l.trim() === '') {
+                i += 1;
+                break;
+            }
+            if (/^\s*\d+\.\s+/.test(l) || /^\s*[-*]\s+/.test(l) || l.trim().startsWith('```')) {
+                break;
+            }
+            paraLines.push(l);
+            i += 1;
+        }
+        if (paraLines.length) {
+            const p = document.createElement('p');
+            p.className = 'stash-paragraph';
+            p.appendChild(renderInline(paraLines.join('\n')));
+            container.appendChild(p);
+        } else {
+            i += 1;
+        }
     }
     return container;
 }

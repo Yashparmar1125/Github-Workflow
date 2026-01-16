@@ -544,3 +544,50 @@ pre,
 .stash-message-content p:first-child {
     margin-top: 0;
 }
+
+.stash-message-content .stash-paragraph+.stash-code,
+.stash-message-content .stash-list+.stash-code {
+    margin-top: 0.35rem;
+}
+
+.stash-message-content .stash-code {
+    margin-top: 0.25rem;
+    margin-bottom: 0.2rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 0.375rem;
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.7rem;
+    white-space: pre-wrap;
+}
+
+.stash-message-content .stash-code-inner {
+    white-space: pre-wrap;
+}
+
+.stash-message-content .stash-list {
+    margin-top: 0.2rem;
+    margin-bottom: 0.1rem;
+    padding-left: 1.1rem;
+}
+
+.stash-message-content .stash-list li {
+    margin-top: 0.1rem;
+}
+
+.stash-message-content strong {
+    font-weight: 600;
+}
+
+.stash-message-content em {
+    font-style: italic;
+}
+
+.stash-message-content .stash-inline-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.72rem;
+    background-color: #f6f8fa;
+    padding: 0 0.15rem;
+    border-radius: 0.2rem;
+}
