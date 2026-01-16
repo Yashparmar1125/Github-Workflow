@@ -454,19 +454,42 @@ function stashCallApi(userText) {
         .then(data => {
             stashSetTyping(false);
             stashIsRequestInFlight = false;
-            const choice = data && data.choices && data.choices[0];
-            const assistantMessage = choice && choice.message && choice.message.content ? String(choice.message.content) : '';
-            if (choice && (choice.reasoning || choice.reasoning_details)) {
+            let assistantMessage = '';
+            let assistantRole = 'assistant';
+            let reasoningValue = null;
+
+            if (data && data.data && data.data.message && data.data.message.content) {
+                assistantMessage = String(data.data.message.content);
+                if (data.data.message.role) {
+                    assistantRole = data.data.message.role;
+                }
+                if (data.data.reasoning) {
+                    reasoningValue = data.data.reasoning;
+                }
+            } else {
+                const choice = data && data.choices && data.choices[0];
+                if (choice && choice.message && choice.message.content) {
+                    assistantMessage = String(choice.message.content);
+                    if (choice.message.role) {
+                        assistantRole = choice.message.role;
+                    }
+                    if (choice.reasoning || choice.reasoning_details) {
+                        reasoningValue = choice.reasoning || choice.reasoning_details;
+                    }
+                }
+            }
+
+            if (reasoningValue) {
                 stashReasoningDetails.push({
                     at: Date.now(),
-                    reasoning: choice.reasoning || choice.reasoning_details
+                    reasoning: reasoningValue
                 });
             }
             if (!assistantMessage) {
                 stashAppendMessage('assistant', 'I\'d love to help with that! Could you share more details about what you\'re trying to accomplish? For example:\n- What Git command were you running?\n- What branch are you working on?\n- What specific issue are you encountering?\n\nThis will help me give you the most accurate guidance.');
             } else {
                 stashMessages.push({
-                    role: 'assistant',
+                    role: assistantRole,
                     content: assistantMessage
                 });
                 stashAppendMessage('assistant', assistantMessage, {
