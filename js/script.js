@@ -410,6 +410,52 @@ function stashAppendMessage(role, content, options) {
     container.scrollTop = container.scrollHeight;
 }
 
+function stashStreamAssistantMessage(content) {
+    const container = document.getElementById('stash-messages');
+    if (!container) {
+        return;
+    }
+    const wrapper = document.createElement('div');
+    wrapper.className = 'flex items-start gap-2';
+    const avatar = document.createElement('div');
+    avatar.className = 'w-7 h-7 rounded-full flex items-center justify-center text-white text-[11px] font-semibold flex-shrink-0 bg-[#24292f] mt-1';
+    avatar.textContent = 'S';
+    const bubble = document.createElement('div');
+    bubble.className = 'max-w-[80%] px-3 py-2 text-xs shadow-sm rounded-2xl rounded-tl-sm bg-white border border-[#d0d7de] text-[#24292f]';
+    const streaming = document.createElement('p');
+    streaming.className = 'stash-paragraph';
+    bubble.appendChild(streaming);
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(bubble);
+    container.appendChild(wrapper);
+    container.scrollTop = container.scrollHeight;
+    const full = String(content || '');
+    let index = 0;
+    const total = full.length;
+    const step = 4;
+    function tick() {
+        if (index >= total) {
+            const formatted = stashFormatMessageContent(full);
+            bubble.innerHTML = '';
+            bubble.appendChild(formatted);
+            const meta = document.createElement('p');
+            meta.className = 'mt-1 text-[10px] text-[#8c959f]';
+            meta.textContent = 'Read';
+            bubble.appendChild(meta);
+            container.scrollTop = container.scrollHeight;
+            return;
+        }
+        index += step;
+        if (index > total) {
+            index = total;
+        }
+        streaming.textContent = full.slice(0, index);
+        container.scrollTop = container.scrollHeight;
+        setTimeout(tick, 20);
+    }
+    tick();
+}
+
 function stashSetTyping(isTyping) {
     const typing = document.getElementById('stash-typing');
     if (!typing) {
@@ -574,9 +620,7 @@ function stashCallApi(userText) {
                     role: assistantRole,
                     content: assistantMessage
                 });
-                stashAppendMessage('assistant', assistantMessage, {
-                    meta: 'Read'
-                });
+                stashStreamAssistantMessage(assistantMessage);
             }
             stashSetStatus('Ready for your next Git question', 'ok');
             stashProcessQueue();
